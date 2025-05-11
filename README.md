@@ -106,50 +106,6 @@ Fine-tuned weights (merged or adapter-only) are written to `pretrained_models/<m
 
 ---
 
-### 2. Quick Validation
-
-Open `Evaluate.ipynb` (or `test_finetuning.ipynb`) to run BERTScore and the LLM-based multi-criteria evaluation:
-
-```bash
-jupyter notebook train_and_evaluate/Evaluate.ipynb
-```
-
-Inside the notebook set:
-```python
-MODEL_PATH = "<root>/pretrained_models/Qwen2.5-3B-Instruct/fine_tuned"
-PROMPT = "USER: I feel anxious all the time.\nASSISTANT:"
-```
-
-Run all cells to generate and score responses.
-
----
-
-### 3. On-Device Deployment (Optional)
-
-#### 1. ONNX export
-```bash
-cd sLM_SNPE
-python huggingface_onnx_qwen.py \
-  --hf_model_path <MODEL_PATH> \
-  --onnx_out qwen3b_fp16.onnx
-```
-
-#### 2. Quantize & optimize for SNPE
-Use Qualcomm’s `snpe-dlc-quantize` and `snpe-dlc-graph-prepare` to produce an INT8/INT4 DLC for Hexagon HTP.
-
----
-
-### 4. Command Cheat-Sheet
-
-| Stage           | Script / Notebook             | Minimum flag(s)                |
-|-----------------|-------------------------------|--------------------------------|
-| Train – Qwen    | `QLoRA_Qwen_2.5_3B_train.py`  | `--root_path`                  |
-| Train – LLaMA   | `QLora_Llama_3.2_3B_train.py` | `--root_path`                  |
-| Evaluate / demo | `Evaluate.ipynb`              | `MODEL_PATH` (in notebook)     |
-| ONNX export     | `huggingface_onnx_qwen.py`    | `--hf_model_path`, `--onnx_out`|
-
-TIP: Reduce checkpoint size by increasing `--save_steps` and `--logging_steps`.
-
 ## Results and Performance Overview
 
 After fine-tuning, the small models demonstrated notable improvements in their ability to analyze and generate mental health-related text. We summarize key outcomes below:
